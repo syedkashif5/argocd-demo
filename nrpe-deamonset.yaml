@@ -39,7 +39,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: nrpe
-          image: syedkashif5/nagios-nrpe:2.0
+          image: syedkashif5/nagios-nrpe:2.1
           imagePullPolicy: IfNotPresent
           command: ["/usr/local/nagios/bin/nrpe"]
           args: ["-c", "/usr/local/nagios/etc/nrpe.cfg", "-f"]
