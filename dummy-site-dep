@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dummy-site
+  labels:
+    app: dummy-site
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dummy-site
+  template:
+    metadata:
+      labels:
+        app: dummy-site
+    spec:
+      containers:
+        - name: dummy-site
+          image: nginx:latest   # simple dummy site
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: site-content
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: site-content
+          configMap:
+            name: dummy-site-html
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dummy-site-html
+data:
+  index.html: |
+    <html>
+      <head><title>Dummy Site</title></head>
+      <body>
+        <h1>Welcome to the Dummy Site!</h1>
+        <p>Deployed via ArgoCD 🚀</p>
+      </body>
+    </html>
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dummy-site
+  labels:
+    app: dummy-site
+spec:
+  selector:
+    app: dummy-site
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30080   # You can change this port (range: 30000-32767)
+  type: NodePort
