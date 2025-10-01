@@ -15,15 +15,6 @@ spec:
       labels:
         app: dummy-site
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: nodepool
-                    operator: In
-                    values:
-                      - dummy
       containers:
       - name: dummy-site-ctnr
         image: ubuntu/apache2:latest
