@@ -32,9 +32,10 @@ metadata:
   name: dummy-site-srv
   namespace: voslogic
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
   - port: 80
     targetPort: 80
+    nodePort: 30080   # must be between 30000–32767
   selector:
     app: dummy-site
