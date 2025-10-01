@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: voslogic
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dummy-site
+  namespace: voslogic
+  labels:
+    app: dummy-site
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dummy-site
+  template:
+    metadata:
+      labels:
+        app: dummy-site
+    spec:
+      containers:
+      - name: dummy-site-ctnr
+        image: ubuntu/apache2:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dummy-site-srv
+  namespace: voslogic
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: dummy-site
